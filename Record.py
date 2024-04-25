@@ -20,8 +20,15 @@ class Record:
     def remove_phone(self, number: str):
         self.phones = list(filter(lambda phone: phone == number,self.phones))
         
-    def edit_phone(self, old_number, new_number):
-        self.phones = list(map(lambda phone: Phone(new_number) if phone.value == old_number else phone, self.phones))
+    def edit_phone(self, old_number: str, new_number: str):
+        found = False
+        for i, phone in enumerate(self.phones):
+            if phone.value == old_number:
+                self.phones[i] = Phone(new_number)
+                found = True
+                break
+        if not found:
+            raise KeyError('Provided number does not exist or contact has no phone numbers.')
         
     def find_phone(self, number):
         for phone in self.phones:

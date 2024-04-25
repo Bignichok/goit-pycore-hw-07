@@ -6,9 +6,9 @@ class Phone(Field):
 
     def validate_number(self, number):
         if len(number) != 10:
-            raise ValueError("Номер телефону повинен містити 10 цифр")
+            raise ValueError("Telephone number should have 10 numbers")
         
         if not number.isdigit():
-            raise ValueError("Номер телефону повинен містити лише цифри")
+            raise ValueError("Telephone number should have only numbers")
         
         return number

@@ -7,16 +7,24 @@ def is_weekend_day(day:int) -> bool:
     return day > 4
 
 class AddressBook(UserDict):
+    def __str__(self):
+        lines = []
+
+        for _, record in self.data.items():
+            lines.append(f'{record}')
+            
+        return "\n".join(lines)
+    
     def add_record(self, record):
         if record.name.value in self.data:
             raise KeyError(f"Record with name '{record.name.value}' already exists.")
         self.data[record.name.value] = record
             
-    def find(self, name):
+    def find(self, name: str):
         if name in self.data:
             return self.data[name]
         else:
-            raise KeyError(f"Record with name '{name}' not found.")
+            return None
         
     def delete(self, name):
         del self.data[name]
@@ -39,5 +47,4 @@ class AddressBook(UserDict):
                         congratulation_date = birthday_date
                 if congratulation_date:
                     upcoming_birthdays.append({"name": name, "congratulation_date": congratulation_date.strftime(DATE_FORMAT)})
-        print("Список привітань на цьому тижні:", upcoming_birthdays)
         return upcoming_birthdays
