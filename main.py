@@ -1,6 +1,8 @@
 from AddressBook import AddressBook
 from Record import Record
 
+not_found_message = "Contact does not exist, you can add it"
+
 def handle_error(func):
     def inner(*args, **kwargs):
         try:
@@ -28,7 +30,7 @@ def change_contact(args, book: AddressBook):
     name, old_number, new_number = args
     record = book.find(name)
     if record is None:
-        raise KeyError("Contact does not exist, you can add it")
+        return not_found_message
     else:
         record.edit_phone(old_number, new_number)
         return "Phone changed"
@@ -38,7 +40,7 @@ def show_phone(args, book: AddressBook):
     name = args[0]
     record = book.find(name)
     if record is None:
-        raise KeyError("Contact does not exist, you can add it")
+        return not_found_message
     return record
 
 @handle_error
@@ -49,11 +51,11 @@ def add_birthday(args, book: AddressBook):
         record.add_birthday(date)
         return "Birthday added."
     else:
-        return 'contact not found'
+        return not_found_message
 
 @handle_error
 def show_birthday(args, book: AddressBook):
-    name = args
+    name = args[0]
     record = book.find(name)
     if record:
         if record.birthday:
@@ -61,7 +63,7 @@ def show_birthday(args, book: AddressBook):
         else:
             return 'Birthday not added to this contact.'
     else:
-        return 'contact not found'
+        return not_found_message
 
 def parse_input(user_input):
     cmd, *args = user_input.split()
@@ -92,7 +94,7 @@ def main():
             case "add-birthday":
                 print(add_birthday(args, book))
             case "show-birthday":
-                print(add_birthday(args, book))
+                print(show_birthday(args, book))
             case "birthdays":
                 print(book.get_upcoming_birthdays())
             case _:
